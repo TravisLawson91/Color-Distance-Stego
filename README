@@ -3,7 +3,7 @@
 
 Purpose:
  	The purpose of this program is to hide a payload in a bitmap
- 	image, and extract the payload at a later time.
+ 	image and extract the payload at a later time.
  	
  	We based our project on the paper written by Dr. Jiri Fridrich,
  	    A New Steganographic Method for Palette-Based Images
@@ -17,7 +17,7 @@ Purpose:
  	does not match our message bit, we check to see if the next 
  	closest color will. 
  	
- 	Best result is the image is a error-difused bitmap
+ 	For best results used a error-difused bitmap
  
 Commands:
 	To hide:
@@ -27,7 +27,22 @@ Commands:
 
 Compile as 
 	gcc -m32 -g -o bmp bitmap.c setLinkedListImp.c -lm
+	A Makefile is included.
 
 Notes:
 	'outfile.bmp' is the name of the stego-image produced when hiding.
 	'recovered' is the file name of the recovered payload.
+	
+	This program was developed for UTSA Steganography class, CS 4463,
+	insturcted by John Ortiz. It was a semester long project.
+	
+	I am sure there are various improvements that can be made. One being 
+	the use of a pseudo random number to select a pixel we want to use for 
+	hiding. 
+	
+	There may also be issues with the clearSet funtion in setLinkedLimpImp.c,
+	this was a bit of old code I reporposed from a early Data Structures class
+	I took in Fall 2016. It's not the prettiest but it served its purpose.The
+	two functions that were added for this program are:
+		setPrint()
+		setColorDistance()
