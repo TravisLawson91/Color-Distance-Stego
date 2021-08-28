@@ -1,0 +1,33 @@
+ 			    bitmap.c
+ 	Written by: Travis Lawson, Rakerd Calhoun, and Joshua Romero
+
+Purpose:
+ 	The purpose of this program is to hide a payload in a bitmap
+ 	image, and extract the payload at a later time.
+ 	
+ 	We based our project on the paper written by Dr. Jiri Fridrich,
+ 	    A New Steganographic Method for Palette-Based Images
+
+ 	The program will take a 256 color bitmap and hide a payload 
+ 	based on the closest color of the current pixel color. When
+ 	we find the closest color, a we calculate the parity of the 
+ 	RBG values from the palette entry referenced by the pixel.
+ 	If the parity matches, we update the pixel index to reference
+ 	the new palette entry. If the parity of the current closest color
+ 	does not match our message bit, we check to see if the next 
+ 	closest color will. 
+ 	
+ 	Best result is the image is a error-difused bitmap
+ 
+Commands:
+	To hide:
+		./bmp -hide [cover image] [payload]
+	To extract:
+		./bmp -extract outfile.bmp
+
+Compile as 
+	gcc -m32 -g -o bmp bitmap.c setLinkedListImp.c -lm
+
+Notes:
+	'outfile.bmp' is the name of the stego-image produced when hiding.
+	'recovered' is the file name of the recovered payload.
