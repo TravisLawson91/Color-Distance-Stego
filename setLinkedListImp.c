@@ -3,8 +3,8 @@
 #include "set.h"
 
 typedef struct point{
-    setElementT x; // color difference
-    int count; // palette entry
+    setElementT colorDist; // color difference
+    int index; // palette entry
     struct point *next;
 }myDataT;
 
@@ -26,17 +26,6 @@ setADT setNew()
 
 void clearSet(setADT set)
 {
-	/*
-	myDataT *cp, *next;
-	cp = set->start;
-	while ( cp != NULL){
-		next = cp->next;
-		free(cp);
-		cp = next;
-	}
-	free(set);
-    	set->start = set->end = NULL;
-	*/
 	while(set->start != NULL){
 		myDataT* tmp;
 		tmp = set->start;
@@ -47,63 +36,67 @@ void clearSet(setADT set)
 }
 
 
-int setInsertElementSorted(setADT s, setElementT e, int index)
+int setInsertElementSorted(setADT set, setElementT distance, int index)
 {
-    myDataT *b, *prev, *curr;
+    myDataT *insert, *prev, *curr;
 
-    b = (myDataT *) malloc(sizeof(myDataT));
+    insert = (myDataT *) malloc(sizeof(myDataT));
 
-    if(b == NULL)
+    if(insert == NULL)
         return -1;
 
-    b->x = e;
-    b->next = NULL;
+    insert->colorDist = distance;
+    insert->next = NULL;
 
     prev = NULL;
-    curr = s->start;
+    curr = set->start;
     
     while(curr)
     {
-        if(curr->x >= b->x) break;
+        if(curr->colorDist >= insert->colorDist) break;
         prev = curr;
         curr = curr->next;
     }
     if(prev == NULL)
     {
-        b->next = s->start;
-        s->start = b;
+        insert->next = set->start;
+        set->start = insert;
     }else{
-        b->next = prev->next;
-        prev->next = b;
+        insert->next = prev->next;
+        prev->next = insert;
     }
 
-    if(b->next == NULL)
-        s->end = b;
+    if(insert->next == NULL)
+        set->end = insert;
     
-    b->count = index;
-    return b->count;
+    insert->index = index;
+    return insert->index;
 }
 
 
-void setPrint(setADT s)
+void setPrint(setADT set)
 {
-    myDataT *b;
+    myDataT *node;
     //for loop will traverse and print each value in the linked list.
-    for(b = s->start; b!=NULL; b = b->next)
-        printf("distsance %f index %d\n", b->x, b->count);
+    for(node = set->start; node!=NULL; node = node->next)
+        printf("distsance %f index %d\n", node->colorDist, node->index);
 
     printf("\n");
 }
 
-// function to return the smallest color distance and index
-void setColorDistance(setADT s, int j[]){
-	myDataT *b;
+/*
+ * setColorDistance will iterate through the whole linked list
+ * and place the sorted index into pIndex passed from the 
+ * fuction call in hideMessage()
+ */
+void setColorDistance(setADT set, int pIndex[]){
+	myDataT *node;
 	int i;
 	i = 0;
-	for(b = s->start; b != NULL; b = b->next){
+	for(node = set->start; node != NULL; node = node->next){
 		if(i == 256)
 			return;
-		j[i] = b->count;
+		pIndex[i] = node->index;
 		i++;
 
 	}
